@@ -1,6 +1,7 @@
-const cache = {};
+const ERC20MetadataABI = require('../abi/erc20metadata.json');
 
-function printTransfer(web3, abi, topics, callback) {
+function watchForERC20Transfer(web3, callback) {
+  const cache = {};
   return async function res(error, data) {
     if (!data.topics[1] || !data.topics[2]) return;
     const from = web3.utils.toHex(web3.utils.toBN(data.topics[1]));
@@ -11,7 +12,7 @@ function printTransfer(web3, abi, topics, callback) {
     if (data.address in cache) {
       [symbol, name] = cache[data.address];
     } else {
-      const contract = new web3.eth.Contract(abi, data.address);
+      const contract = new web3.eth.Contract(ERC20MetadataABI, data.address);
       if ('symbol' in contract.methods) {
         try {
           symbol = await contract.methods.symbol().call();
@@ -32,10 +33,9 @@ function printTransfer(web3, abi, topics, callback) {
   };
 }
 
-export default function listenToEvents(web3, abi, topics, callback) {
-  web3.eth.subscribe(
-    'logs',
-    { fromBlock: null, topics },
-    printTransfer(web3, abi, topics, callback),
-  );
-}
+module.exports = function subscribeToERC20Events(web3, callback) {
+  const erc20TransferSig = web3.utils.keccak256('Transfer(address,address,uint256)');
+  const topics = [erc20TransferSig];
+
+  web3.eth.subscribe('logs', { fromBlock: null, topics }, watchForERC20Transfer(web3, callback));
+};

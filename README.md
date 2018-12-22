@@ -1,37 +1,21 @@
-# abi2solidity
+# eth-event-watcher
 
 Convert an ABI to a Solidity interface
-
-## Install
-
-```shell
-$ npm install --save abi2solidity
-# OR
-$ yarn add abi2solidity
-```
-
-If you want to use the cli, you can install it globally:
-
-```shell
-$ npm install --global abi2solidity
-# OR
-$ yarn global add abi2solidity
-```
 
 ## CLI Usage
 
 ```shell
-$ abi2solidity -h
-Usage: abi2solidity [options]
+$ eth-watch-event -h
+Usage: eth-watch-event [options]
 
 Options:
   -V, --version        output the version number
-  -i, --input <file>   JSON ABI Input file (default: "")
-  -o, --output <file>  Solidity output file (default: "")
+  -e, --event <string> JSON ABI Input file (default: "")
+  -a, --abi <file>
   -h, --help           output usage information
 
-# Example
-$ abi2solidity -i abi.json -o export.sol
+# Example, watch for ERC20 events
+$ eth-watch-event -a erc20abi.json -e "Transfer(address,address,uint256)"
 ```
 
 ## Code Usage
