@@ -6,7 +6,7 @@ function watchForERC20Transfer(web3, callback) {
     if (!data.topics[1] || !data.topics[2]) return;
     const from = web3.utils.toHex(web3.utils.toBN(data.topics[1]));
     const to = web3.utils.toHex(web3.utils.toBN(data.topics[2]));
-    const value = web3.utils.hexToNumberString(data.data);
+    const value = web3.utils.toBN(data.data);
     let symbol = 'UNK';
     let name = 'Unknown';
     if (data.address in cache) {
