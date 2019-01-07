@@ -26,7 +26,7 @@ $(document).ready(() => {
     filter = event.target.value;
   });
 
-  const params = new URLSearchParams(location.search);
+  const params = new URLSearchParams(document.location.search);
   const urlFilter = params.get('filter');
   $('#search').val(urlFilter);
   filter = urlFilter;
