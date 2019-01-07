@@ -26,6 +26,11 @@ $(document).ready(() => {
     filter = event.target.value;
   });
 
-  // Subscribe to web3 events
+  const params = new URLSearchParams(location.search);
+  const urlFilter = params.get('filter');
+  $('#search').val(urlFilter);
+  filter = urlFilter;
+
+  // Subscribe to all ERC20 web3 events (warning: not efficient at all)
   subscribeToERC20Events(web3, consoleLog);
 });
