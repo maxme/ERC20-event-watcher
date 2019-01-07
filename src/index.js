@@ -33,9 +33,23 @@ function watchForERC20Transfer(web3, callback) {
   };
 }
 
-module.exports = function subscribeToERC20Events(web3, callback) {
+function loopOverPastLogs(web3, callback) {
+  return async function f(err, array) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    for (let i = 0; i < array.length; i += 1) {
+      watchForERC20Transfer(web3, callback)(err, array[i]);
+    }
+  };
+}
+
+module.exports = async function subscribeToERC20Events(web3, callback) {
   const erc20TransferSig = web3.utils.keccak256('Transfer(address,address,uint256)');
   const topics = [erc20TransferSig];
+  const fromBlock = (await web3.eth.getBlockNumber()) - 500;
 
-  web3.eth.subscribe('logs', { fromBlock: null, topics }, watchForERC20Transfer(web3, callback));
+  web3.eth.getPastLogs({ fromBlock, toBlock: 'latest', topics }, loopOverPastLogs(web3, callback));
+  web3.eth.subscribe('logs', { fromBlock, topics }, watchForERC20Transfer(web3, callback));
 };
