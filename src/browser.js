@@ -7,7 +7,7 @@ const web3 = new Web3(new Web3.providers.WebsocketProvider('wss://mainnet.infura
 let filter = '';
 
 // Callback that adds new lines to the table
-function consoleLog(value, symbol, name, from, to, contractAddress) {
+function addEventToTable(value, symbol, name, from, to, contractAddress) {
   if (symbol.match(filter) || (symbol.match(filter) || contractAddress.match(filter))) {
     web3.utils.fromWei(value);
     const v = web3.utils.fromWei(value).toString();
@@ -28,9 +28,11 @@ $(document).ready(() => {
 
   const params = new URLSearchParams(document.location.search);
   const urlFilter = params.get('filter');
-  $('#search').val(urlFilter);
-  filter = urlFilter;
+  if (urlFilter) {
+    $('#search').val(urlFilter);
+    filter = urlFilter;
+  }
 
   // Subscribe to all ERC20 web3 events (warning: not efficient at all)
-  subscribeToERC20Events(web3, consoleLog);
+  subscribeToERC20Events(web3, addEventToTable);
 });
