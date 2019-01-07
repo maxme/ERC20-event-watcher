@@ -4,6 +4,14 @@ Watch ERC20 Transfer events in realtime. You can test it on my website: https://
 
 ## CLI Usage
 
+### Build
+
+```shell
+$ yarn build-cli
+```
+
+### Run
+
 ```shell
 $ eth-watch-event -h
 Usage: eth-watch-event [options]
@@ -18,44 +26,15 @@ Options:
 $ eth-watch-event -a erc20abi.json -e "Transfer(address,address,uint256)"
 ```
 
-## Code Usage
+## Web Usage
 
-```js
-import ABI2solidity from "abi2solidity";
-
-const ABI = `
-[
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "f",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
-]
-`;
-
-const solidity = ABI2solidity(ABI);
-console.log(solidity);
-// Will print out:
-// interface GeneratedInterface {
-//   function f (  ) external returns ( uint256 );
-// }
-```
-
-Alternative usage with files:
-
-```js
-import { ABI2solidityFiles } from "abi2solidity";
-
-ABI2solidityFiles(inputFileABI, outputFileSolidity);
+```shell
+$ yarn build
+yarn run v1.12.3
+$ browserify src/browser.js -o dist/browser.js
+✨  Done in 1.78s.
+# Open the index.html file or on mac, run:
+$ open index.html
 ```
 
 # Development
