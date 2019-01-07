@@ -1,6 +1,6 @@
-# eth-event-watcher
+# Real time ERC20 transfers
 
-Convert an ABI to a Solidity interface
+Watch ERC20 Transfer events in realtime. You can test it on my website: https://bia.is/tools/erc20-watcher
 
 ## CLI Usage
 
